@@ -21,6 +21,7 @@ React Native wrapper for Sift [iOS](https://github.com/SiftScience/sift-ios) and
 ### iOS
 - **iOS**: 13.4 or higher
 - **CocoaPods**: Latest version recommended
+- **Sift iOS SDK**: a version that includes the manual screen label API ([sift-ios#167](https://github.com/SiftScience/sift-ios/pull/167)), required by `setPageName`
 
 ### Android
 - **Android SDK**: API level 24 (Android 7.0) or higher
@@ -85,6 +86,10 @@ const App = () => {
     SiftReactNative.unsetUserId();
   };
 
+  const handleScreenChange = (screenName: string) => {
+    SiftReactNative.setPageName(screenName);
+  };
+
   return (
     // Your app components
   );
@@ -117,6 +122,15 @@ Clears the current user ID. Call this when a user logs out.
 ### upload()
 
 Manually uploads collected data to Sift. The SDK automatically uploads data periodically, but you can call this method to force an immediate upload.
+
+### setPageName(pageName)
+
+Sets the screen name attached to app state events and collects once, so the name reaches Sift immediately and stays in effect until it is changed or cleared.
+
+**Parameters:**
+- `pageName` (string | null): The screen name to report. Pass `null` or an empty string to clear it and return to the SDK's automatic value
+
+Call it once per screen change, not on every render: each call runs one collection (app state plus device properties) with no rate limiting. Calling it before `setSiftConfig` does nothing.
 
 ## Example App
 

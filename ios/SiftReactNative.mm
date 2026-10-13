@@ -1,7 +1,9 @@
 #import "SiftReactNative.h"
 #import <Sift/Sift.h>
 
-@implementation SiftReactNative
+@implementation SiftReactNative {
+    BOOL _configured;
+}
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beaconKey disallowCollectingLocationData:
@@ -13,6 +15,7 @@ RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beac
     if ([serverUrlFormat length] > 0) {
         [sift setServerUrlFormat:serverUrlFormat];
     }
+    _configured = YES;
     [sift upload];
 }
 
@@ -34,6 +37,15 @@ RCT_EXPORT_METHOD(onHostPause) {
 
 RCT_EXPORT_METHOD(onHostResume) {
     [[Sift sharedInstance] resume];
+}
+
+RCT_EXPORT_METHOD(setPageName:(NSString *)pageName) {
+    if (!_configured) {
+        return;
+    }
+    Sift *sift = [Sift sharedInstance];
+    [sift setTitle:pageName];
+    [sift collect];
 }
 
 

@@ -1,5 +1,10 @@
 # Change Log
 
+## [Unreleased]
+
+### Added
+- `setPageName(pageName)` to report the current screen name on both iOS and Android. The name is attached to app state events, is kept across background and foreground, and each call runs one collection (app state plus device properties). Pass `null` or an empty string to clear it. Requires a Sift iOS SDK version that includes the manual screen label API (sift-ios#167)
+
 ## [1.0.0] - 2025-10-20
 
 ### Added
@@ -29,6 +34,7 @@
 - Modernized project structure and configuration files
 
 ### Removed
+- **BREAKING**: `setPageName(pageName)` (Android only). It did not fit the shared TurboModule spec and was dropped in the React Native 0.81 migration without a changelog entry. Restored for both platforms in a later release
 - Old React Native architecture files (Flipper, JNI, C++ components)
 - Buck build system files
 - Flow configuration (`.flowconfig`)

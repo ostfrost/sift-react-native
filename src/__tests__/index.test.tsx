@@ -7,6 +7,7 @@ const mockNativeModule: jest.Mocked<Spec> = {
   setUserId: jest.fn(),
   unsetUserId: jest.fn(),
   upload: jest.fn(),
+  setPageName: jest.fn(),
   onHostResume: jest.fn(),
   onHostPause: jest.fn(),
 };
@@ -150,6 +151,24 @@ describe('SiftReactNative JS API', () => {
       disallow,
       serverUrl
     );
+  });
+
+  it('forwards setPageName with a screen name', () => {
+    SiftReactNative.setPageName('Checkout');
+    expect(mockNativeModule.setPageName).toHaveBeenCalledTimes(1);
+    expect(mockNativeModule.setPageName).toHaveBeenCalledWith('Checkout');
+  });
+
+  it('forwards setPageName with null to clear the label', () => {
+    SiftReactNative.setPageName(null);
+    expect(mockNativeModule.setPageName).toHaveBeenCalledTimes(1);
+    expect(mockNativeModule.setPageName).toHaveBeenCalledWith(null);
+  });
+
+  it('forwards setPageName with an empty string to clear the label', () => {
+    SiftReactNative.setPageName('');
+    expect(mockNativeModule.setPageName).toHaveBeenCalledTimes(1);
+    expect(mockNativeModule.setPageName).toHaveBeenCalledWith('');
   });
 
   it('isBridgeAvailable returns true when bridge is present', () => {

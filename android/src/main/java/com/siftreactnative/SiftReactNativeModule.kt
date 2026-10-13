@@ -1,6 +1,5 @@
 package com.siftreactnative
 
-import android.text.TextUtils
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -18,6 +17,7 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
   }
 
   private var siftConfig: Sift.Config? = null
+  @Volatile private var pageName: String? = null
 
   init {
     reactContext.addLifecycleEventListener(this)
@@ -42,7 +42,7 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
     }
 
     siftConfig = builder.build()
-    Sift.open(reactApplicationContext, siftConfig)
+    Sift.open(reactApplicationContext, siftConfig, pageName)
     Sift.collect()
   }
 
@@ -63,8 +63,16 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
     Sift.collect()
   }
 
+  @ReactMethod
+  override fun setPageName(pageName: String?) {
+    if (siftConfig == null) return
+    this.pageName = if (pageName.isNullOrEmpty()) null else pageName
+    Sift.open(reactApplicationContext, this.pageName)
+    Sift.collect()
+  }
+
   override fun onHostResume() {
-    Sift.resume(reactApplicationContext)
+    Sift.resume(reactApplicationContext, pageName)
   }
 
   override fun onHostPause() {

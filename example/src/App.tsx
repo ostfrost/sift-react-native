@@ -22,6 +22,7 @@ const App = () => {
       : 'https://api3.siftscience.com/v3/accounts/%s/mobile_events';
   let [serverUrlFormat, setServerUrlFormat] = useState(defaultUrl);
   let [userId, setUserId] = useState('');
+  let [pageName, setPageName] = useState('');
   let [errortext, setErrortext] = useState('');
 
   const handleSubmitButton = () => {
@@ -106,6 +107,42 @@ const App = () => {
               onPress={handleSubmitButton}
             >
               <Text style={styles.buttonTextStyle}>UPLOAD</Text>
+            </TouchableOpacity>
+
+            <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                value={pageName}
+                onChangeText={(PageName) => setPageName(PageName)}
+                placeholder="Enter Page Name"
+                placeholderTextColor="gray"
+                onSubmitEditing={Keyboard.dismiss}
+                blurOnSubmit={false}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={() => {
+                SiftReactNative.setPageName(pageName);
+                Alert.alert(
+                  'Success',
+                  `setPageName('${pageName}') called successfully`
+                );
+              }}
+            >
+              <Text style={styles.buttonTextStyle}>SET PAGE NAME</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={() => {
+                SiftReactNative.setPageName(null);
+                Alert.alert('Success', 'setPageName(null) called successfully');
+              }}
+            >
+              <Text style={styles.buttonTextStyle}>CLEAR PAGE NAME</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
