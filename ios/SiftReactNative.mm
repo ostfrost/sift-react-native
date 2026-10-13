@@ -18,7 +18,7 @@ RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beac
     }
     _configured = YES;
     if (_pageName.length > 0) {
-        [sift setTitle:_pageName];
+        [sift setScreenTitle:_pageName];
     }
     [sift upload];
 }
@@ -49,7 +49,7 @@ RCT_EXPORT_METHOD(setPageName:(NSString *)pageName) {
         return;
     }
     Sift *sift = [Sift sharedInstance];
-    [sift setTitle:_pageName];
+    [sift setScreenTitle:_pageName];
     [sift collect];
 }
 
