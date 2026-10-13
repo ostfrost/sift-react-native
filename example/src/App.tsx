@@ -126,8 +126,8 @@ const App = () => {
               onPress={() => {
                 SiftReactNative.setPageName(pageName);
                 Alert.alert(
-                  'Success',
-                  `setPageName('${pageName}') called successfully`
+                  'setPageName',
+                  `setPageName('${pageName}') called. It takes effect once setSiftConfig has run.`
                 );
               }}
             >
@@ -139,7 +139,11 @@ const App = () => {
               activeOpacity={0.5}
               onPress={() => {
                 SiftReactNative.setPageName(null);
-                Alert.alert('Success', 'setPageName(null) called successfully');
+                setPageName('');
+                Alert.alert(
+                  'setPageName',
+                  'setPageName(null) called. It takes effect once setSiftConfig has run.'
+                );
               }}
             >
               <Text style={styles.buttonTextStyle}>CLEAR PAGE NAME</Text>
