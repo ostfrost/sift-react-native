@@ -25,6 +25,9 @@ RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beac
         pageName = sPageName;
     }
     [sift setScreenTitle:pageName];
+    if (pageName) {
+        [sift collect];
+    }
     [sift upload];
 }
 
