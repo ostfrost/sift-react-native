@@ -130,7 +130,7 @@ Sets the screen name attached to app state events and collects once, so the name
 **Parameters:**
 - `pageName` (string | null): The screen name to report. Pass `null` or an empty string to clear it and return to the SDK's automatic value
 
-Call it once per screen change, not on every render: each call runs one collection (app state plus device properties) with no rate limiting. Calling it before `setSiftConfig` does nothing.
+Call it once per screen change, not on every render: each call runs one collection (app state plus device properties) with no rate limiting. Calling it before `setSiftConfig` collects nothing; the name is remembered and applied once the SDK is configured.
 
 ## Example App
 

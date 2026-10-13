@@ -3,6 +3,7 @@
 
 @implementation SiftReactNative {
     BOOL _configured;
+    NSString *_pageName;
 }
 RCT_EXPORT_MODULE()
 
@@ -16,6 +17,9 @@ RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beac
         [sift setServerUrlFormat:serverUrlFormat];
     }
     _configured = YES;
+    if (_pageName.length > 0) {
+        [sift setTitle:_pageName];
+    }
     [sift upload];
 }
 
@@ -40,11 +44,12 @@ RCT_EXPORT_METHOD(onHostResume) {
 }
 
 RCT_EXPORT_METHOD(setPageName:(NSString *)pageName) {
+    _pageName = pageName.length > 0 ? [pageName copy] : nil;
     if (!_configured) {
         return;
     }
     Sift *sift = [Sift sharedInstance];
-    [sift setTitle:pageName];
+    [sift setTitle:_pageName];
     [sift collect];
 }
 

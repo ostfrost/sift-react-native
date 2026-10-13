@@ -65,9 +65,10 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   override fun setPageName(pageName: String?) {
+    val name = if (pageName.isNullOrEmpty()) null else pageName
+    this.pageName = name
     if (siftConfig == null) return
-    this.pageName = if (pageName.isNullOrEmpty()) null else pageName
-    Sift.open(reactApplicationContext, this.pageName)
+    Sift.open(reactApplicationContext, name)
     Sift.collect()
   }
 
