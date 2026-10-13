@@ -1,10 +1,13 @@
 #import "SiftReactNative.h"
 #import <Sift/Sift.h>
 
-@implementation SiftReactNative {
-    BOOL _configured;
-    NSString *_pageName;
-}
+@implementation SiftReactNative
+
+// The Sift SDK is a process-wide singleton, so the state that mirrors it
+// outlives any single module instance (a JS reload creates a new one).
+static BOOL sConfigured = NO;
+static NSString *sPageName = nil;
+
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beaconKey disallowCollectingLocationData:
@@ -16,10 +19,12 @@ RCT_EXPORT_METHOD(setSiftConfig:(NSString *)accountId beaconKey:(NSString *)beac
     if ([serverUrlFormat length] > 0) {
         [sift setServerUrlFormat:serverUrlFormat];
     }
-    _configured = YES;
-    if (_pageName.length > 0) {
-        [sift setScreenTitle:_pageName];
+    NSString *pageName;
+    @synchronized (SiftReactNative.class) {
+        sConfigured = YES;
+        pageName = sPageName;
     }
+    [sift setScreenTitle:pageName];
     [sift upload];
 }
 
@@ -44,12 +49,21 @@ RCT_EXPORT_METHOD(onHostResume) {
 }
 
 RCT_EXPORT_METHOD(setPageName:(NSString *)pageName) {
-    _pageName = pageName.length > 0 ? [pageName copy] : nil;
-    if (!_configured) {
+    NSString *name = ([pageName isKindOfClass:NSString.class] && pageName.length > 0)
+        ? [pageName copy]
+        : nil;
+
+    BOOL configured;
+    @synchronized (SiftReactNative.class) {
+        sPageName = name;
+        configured = sConfigured;
+    }
+    if (!configured) {
         return;
     }
+
     Sift *sift = [Sift sharedInstance];
-    [sift setScreenTitle:_pageName];
+    [sift setScreenTitle:name];
     [sift collect];
 }
 

@@ -14,10 +14,15 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
 
   companion object {
     const val NAME = "SiftReactNative"
-  }
 
-  private var siftConfig: Sift.Config? = null
-  @Volatile private var pageName: String? = null
+    // The Sift SDK is a process-wide singleton, so the state that mirrors it
+    // outlives any single module instance (a JS reload creates a new one).
+    @Volatile
+    private var siftConfig: Sift.Config? = null
+
+    @Volatile
+    private var pageName: String? = null
+  }
 
   init {
     reactContext.addLifecycleEventListener(this)
