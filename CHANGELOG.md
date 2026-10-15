@@ -5,6 +5,9 @@
 ### Added
 - `setPageName(pageName)` to report the current screen name on both iOS and Android, restoring the API that was removed in 1.0.0 without a changelog entry. The name is attached to app state events, is kept across background and foreground, and each call requests one collection (app state plus device properties). Pass `null` or an empty string to clear it. Requires a Sift iOS SDK version that includes the manual screen label API (sift-ios#167)
 
+### Changed
+- Upgraded `sift-android` to version `1.3.1`.
+
 ## [1.0.0] - 2025-10-20
 
 ### Added
