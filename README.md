@@ -129,7 +129,7 @@ Manually uploads collected data to Sift. The SDK automatically uploads data peri
 Sets the screen name attached to app state events. It stays in effect until it is changed or cleared, and the call also requests one collection, so the name is attached to an event right away; that event is uploaded on the SDK's normal schedule.
 
 **Parameters:**
-- `pageName` (string | null): The screen name to report. Pass `null` or an empty string to clear it and return to the SDK's automatic value
+- `pageName` (string | null): The screen name to report. Pass `null` or an empty string to clear it and return to the SDK's automatic value. That automatic value differs by platform: on iOS a React Native app has none, so the field is omitted; on Android it is the class name of the React context, for example `BridgelessReactContext`
 
 Call it once per screen change, not on every render: each call requests one collection (app state plus device properties) and nothing rate limits it. On Android, with location collection enabled, that collection is produced by the location callback, so it can be delayed or skipped. Calling it before `setSiftConfig` collects nothing; the name is remembered and applied once the SDK is configured.
 
