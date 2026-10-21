@@ -24,6 +24,7 @@ React Native wrapper for Sift [iOS](https://github.com/SiftScience/sift-ios) and
 - **Sift iOS SDK**: a version that includes the manual screen label API ([sift-ios#167](https://github.com/SiftScience/sift-ios/pull/167)), required by `setPageName`
 
 ### Android
+- **Sift Android SDK**: 1.4.0 or higher, which has the manual screen name API required by `setPageName`
 - **Android SDK**: API level 24 (Android 7.0) or higher
 - **Kotlin**: 1.6.0 or higher
 - **Java**: 8 or higher
@@ -128,7 +129,7 @@ Manually uploads collected data to Sift. The SDK automatically uploads data peri
 Sets the screen name attached to app state events. It stays in effect until it is changed or cleared, and the call also requests one collection, so the name is attached to an event right away; that event is uploaded on the SDK's normal schedule.
 
 **Parameters:**
-- `pageName` (string | null): The screen name to report. Pass `null` or an empty string to clear it and return to the SDK's automatic value. Note that the Android SDK has no empty state for this field, so on Android clearing restores its automatic value, which in a React Native app is the context class name
+- `pageName` (string | null): The screen name to report. Pass `null` or an empty string to clear it and return to the SDK's automatic value
 
 Call it once per screen change, not on every render: each call requests one collection (app state plus device properties) and nothing rate limits it. On Android, with location collection enabled, that collection is produced by the location callback, so it can be delayed or skipped. Calling it before `setSiftConfig` collects nothing; the name is remembered and applied once the SDK is configured.
 

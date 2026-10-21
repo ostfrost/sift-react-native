@@ -19,9 +19,6 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
     // outlives any single module instance (a JS reload creates a new one).
     @Volatile
     private var siftConfig: Sift.Config? = null
-
-    @Volatile
-    private var pageName: String? = null
   }
 
   init {
@@ -47,7 +44,7 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
     }
 
     siftConfig = builder.build()
-    Sift.open(reactApplicationContext, siftConfig, pageName)
+    Sift.open(reactApplicationContext, siftConfig)
     Sift.collect()
   }
 
@@ -70,15 +67,15 @@ class SiftReactNativeModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   override fun setPageName(pageName: String?) {
-    val name = if (pageName.isNullOrEmpty()) null else pageName
-    Companion.pageName = name
+    // The SDK keeps the screen name itself, including before it is configured,
+    // and null or an empty name clears it.
+    Sift.setScreenTitle(pageName)
     if (siftConfig == null) return
-    Sift.open(reactApplicationContext, name)
     Sift.collect()
   }
 
   override fun onHostResume() {
-    Sift.resume(reactApplicationContext, pageName)
+    Sift.resume(reactApplicationContext)
   }
 
   override fun onHostPause() {
